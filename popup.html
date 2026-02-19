@@ -8,7 +8,7 @@
   </head>
   <body>
     <main class="container">
-      <h1>PDF → DOCX</h1>
+      <h1>PDF → REST</h1>
       <p class="subtitle">Перетащите PDF или выберите файл вручную</p>
 
       <section id="drop-zone" class="drop-zone" aria-label="Зона загрузки PDF">
@@ -21,14 +21,6 @@
       <div id="file-info" class="file-info" hidden></div>
       <button id="upload-btn" class="button upload" disabled>Отправить на http://localhost:8090/create</button>
       <div id="status" class="status" role="status" aria-live="polite"></div>
-
-      <section id="result-actions" class="result-actions" hidden>
-        <p class="result-title">DOCX получен. Что сделать с файлом?</p>
-        <div class="actions-row">
-          <button id="save-btn" class="button action-save" type="button">Сохранить DOCX</button>
-          <button id="delete-btn" class="button action-delete" type="button">Удалить</button>
-        </div>
-      </section>
     </main>
 
     <script src="popup.js"></script>

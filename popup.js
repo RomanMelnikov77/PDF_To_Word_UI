@@ -5,45 +5,12 @@ const fileInput = document.getElementById('file-input');
 const fileInfo = document.getElementById('file-info');
 const uploadButton = document.getElementById('upload-btn');
 const statusNode = document.getElementById('status');
-const resultActions = document.getElementById('result-actions');
-const saveButton = document.getElementById('save-btn');
-const deleteButton = document.getElementById('delete-btn');
 
 let selectedFile = null;
-let generatedDocxUrl = null;
-let generatedDocxName = 'converted.docx';
 
 function setStatus(message, type = '') {
   statusNode.textContent = message;
   statusNode.className = `status ${type}`.trim();
-}
-
-function hideResultActions() {
-  resultActions.hidden = true;
-}
-
-function cleanupGeneratedDocx() {
-  if (generatedDocxUrl) {
-    URL.revokeObjectURL(generatedDocxUrl);
-  }
-
-  generatedDocxUrl = null;
-  generatedDocxName = 'converted.docx';
-  hideResultActions();
-}
-
-function tryGetFilename(contentDisposition) {
-  if (!contentDisposition) {
-    return null;
-  }
-
-  const utf8Match = contentDisposition.match(/filename\*=UTF-8''([^;]+)/i);
-  if (utf8Match?.[1]) {
-    return decodeURIComponent(utf8Match[1]);
-  }
-
-  const basicMatch = contentDisposition.match(/filename="?([^";]+)"?/i);
-  return basicMatch?.[1] || null;
 }
 
 function isPdf(file) {
@@ -55,7 +22,6 @@ function setSelectedFile(file) {
     selectedFile = null;
     fileInfo.hidden = true;
     uploadButton.disabled = true;
-    cleanupGeneratedDocx();
     setStatus('Нужен файл в формате PDF.', 'error');
     return;
   }
@@ -64,7 +30,6 @@ function setSelectedFile(file) {
   fileInfo.hidden = false;
   fileInfo.textContent = `Файл: ${file.name} (${Math.ceil(file.size / 1024)} KB)`;
   uploadButton.disabled = false;
-  cleanupGeneratedDocx();
   setStatus('Файл готов к отправке.');
 }
 
@@ -92,26 +57,6 @@ fileInput.addEventListener('change', () => {
   setSelectedFile(file);
 });
 
-saveButton.addEventListener('click', () => {
-  if (!generatedDocxUrl) {
-    setStatus('Нет файла для сохранения.', 'error');
-    return;
-  }
-
-  const link = document.createElement('a');
-  link.href = generatedDocxUrl;
-  link.download = generatedDocxName;
-  document.body.appendChild(link);
-  link.click();
-  link.remove();
-  setStatus('DOCX скачивание запущено.', 'success');
-});
-
-deleteButton.addEventListener('click', () => {
-  cleanupGeneratedDocx();
-  setStatus('DOCX удалён из popup и не будет сохранён.', 'success');
-});
-
 uploadButton.addEventListener('click', async () => {
   if (!selectedFile) {
     setStatus('Сначала выберите PDF файл.', 'error');
@@ -135,22 +80,8 @@ uploadButton.addEventListener('click', async () => {
       throw new Error(`HTTP ${response.status}: ${errorText || 'Unknown error'}`);
     }
 
-    const contentType = response.headers.get('content-type') || '';
-    if (!contentType.includes('application/vnd.openxmlformats-officedocument.wordprocessingml.document')) {
-      setStatus('Ответ получен, но content-type не DOCX. Всё равно предложим сохранить.', 'error');
-    }
-
-    cleanupGeneratedDocx();
-    const blob = await response.blob();
-    generatedDocxUrl = URL.createObjectURL(blob);
-
-    const responseFilename = tryGetFilename(response.headers.get('content-disposition'));
-    generatedDocxName = responseFilename || selectedFile.name.replace(/\.pdf$/i, '') + '.docx';
-
-    resultActions.hidden = false;
-    setStatus('DOCX получен. Выберите: сохранить или удалить.', 'success');
+    setStatus('Файл успешно отправлен.', 'success');
   } catch (error) {
-    cleanupGeneratedDocx();
     setStatus(`Ошибка отправки: ${error.message}`, 'error');
   } finally {
     uploadButton.disabled = false;
