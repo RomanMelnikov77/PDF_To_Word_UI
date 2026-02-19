@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PDF Upload</title>
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <main class="container">
+      <h1>PDF → REST</h1>
+      <p class="subtitle">Перетащите PDF или выберите файл вручную</p>
+
+      <section id="drop-zone" class="drop-zone" aria-label="Зона загрузки PDF">
+        <p>Перетащите PDF сюда</p>
+        <p class="muted">или</p>
+        <label class="button" for="file-input">Выбрать PDF</label>
+        <input id="file-input" type="file" accept="application/pdf,.pdf" />
+      </section>
+
+      <div id="file-info" class="file-info" hidden></div>
+      <button id="upload-btn" class="button upload" disabled>Отправить на http://localhost:8090/create</button>
+      <div id="status" class="status" role="status" aria-live="polite"></div>
+    </main>
+
+    <script src="popup.js"></script>
+  </body>
+</html>
