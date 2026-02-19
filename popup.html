@@ -3,13 +3,13 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>PDF → DOCX</title>
+    <title>PDF Upload</title>
     <link rel="stylesheet" href="popup.css" />
   </head>
   <body>
     <main class="container">
-      <h1>PDF → DOCX</h1>
-      <p class="subtitle">Страница расширения не закрывается при кликах и переключении вкладок.</p>
+      <h1>PDF → REST</h1>
+      <p class="subtitle">Перетащите PDF или выберите файл вручную</p>
 
       <section id="drop-zone" class="drop-zone" aria-label="Зона загрузки PDF">
         <p>Перетащите PDF сюда</p>
@@ -21,16 +21,6 @@
       <div id="file-info" class="file-info" hidden></div>
       <button id="upload-btn" class="button upload" disabled>Отправить на http://localhost:8090/create</button>
       <div id="status" class="status" role="status" aria-live="polite"></div>
-
-      <section id="result-panel" class="result-panel" hidden>
-        <h2>Полученный DOCX</h2>
-        <div id="docx-info" class="docx-info"></div>
-        <div class="actions-row">
-          <button id="open-btn" class="button action-open" type="button">Открыть</button>
-          <button id="save-btn" class="button action-save" type="button">Сохранить</button>
-          <button id="delete-btn" class="button action-delete" type="button">Удалить</button>
-        </div>
-      </section>
     </main>
 
     <script src="popup.js"></script>
