@@ -1,11 +1,13 @@
 {
   "manifest_version": 3,
   "name": "PDF to Word Uploader",
-  "version": "1.0.0",
-  "description": "Upload PDF files to backend REST endpoint.",
+  "version": "1.1.0",
+  "description": "Upload PDF files to backend REST endpoint and handle resulting DOCX.",
   "action": {
-    "default_title": "PDF to Word",
-    "default_popup": "popup.html"
+    "default_title": "PDF to Word"
+  },
+  "background": {
+    "service_worker": "background.js"
   },
   "host_permissions": [
     "http://localhost:8090/*"
